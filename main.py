@@ -4,9 +4,13 @@ class Patch(pygame.sprite.Sprite):
     def __init__(self, x, y, size, images):
         pygame.sprite.Sprite.__init__(self)
         self.images = images
+        self.size=size
         self.state = "empty"
         self.image = pygame.transform.scale(self.images[self.state], (size, size))
         self.rect = self.image.get_rect(topleft=(x, y))
+    def change_state(self, state):
+        self.state=state
+        self.image=pygame.transform.scale(self.images[self.state], (self.size, self.size))
 
 
 class Seed(pygame.sprite.Sprite):
@@ -70,7 +74,7 @@ class Game():
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
 
         self.all_sprites = pygame.sprite.Group()
-        self.all_pathes = pygame.sprite.Group()
+        self.all_patches = pygame.sprite.Group()
         self.tools = pygame.sprite.Group()
         self.configuration=GameConfigurations()
 
@@ -115,7 +119,7 @@ class Game():
                             self.configuration.patch.size + self.configuration.patch.padding)
                 patch = Patch(x, y, self.configuration.patch.size, self.images)
                 self.all_sprites.add(patch)
-                self.all_pathes.add(patch)
+                self.all_patches.add(patch)
         self.selected_sprite = None
         self.running = True
 
@@ -141,8 +145,11 @@ class Game():
                         else:
                             self.selected_sprite = sprite
                         break
-                elif self.all_pathes.has(sprite):
-                    self.selected_sprite = None
+                    elif self.all_patches.has(sprite):
+                        if isinstance(self.selected_sprite, Hoe):
+                            sprite.change_state('hoed')
+                        else:
+                            self.selected_sprite = None
 
     def update(self):
         self.all_sprites.update(self)
