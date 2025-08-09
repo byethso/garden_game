@@ -1,6 +1,6 @@
 import pygame
 
-from patches_states import PatchesStates
+from game.patches.patches_states import PatchesStates
 
 
 class Patch(pygame.sprite.Sprite):

@@ -1,13 +1,13 @@
 import pygame
 
-from configurations.game_configurations import GameConfigurations
-from tools.glove import Glove
-from tools.hoe import Hoe
-from patches.patch import Patch
-from patches.patches_states import PatchesStates
-from tools.seed import Seed
-from tools.tool_type import ToolType
-from tools.watering_can import WateringCan
+from game.configurations.game_configurations import GameConfigurations
+from game.patches.patch import Patch
+from game.patches.patches_states import PatchesStates
+from game.tools.glove import Glove
+from game.tools.hoe import Hoe
+from game.tools.seed import Seed
+from game.tools.tool_type import ToolType
+from game.tools.watering_can import WateringCan
 
 
 class Game():
@@ -24,17 +24,17 @@ class Game():
         self.configuration = GameConfigurations()
 
         self.images = {
-            PatchesStates.EMPTY: pygame.image.load("pics/empty.PNG"),
-            ToolType.GLOVE: pygame.image.load("pics/glove.PNG"),
-            PatchesStates.GROWING: pygame.image.load("pics/growing.PNG"),
-            PatchesStates.HARVESTED: pygame.image.load("pics/harvested.PNG"),
-            ToolType.HOE: pygame.image.load("pics/hoe.PNG"),
-            PatchesStates.HOED: pygame.image.load("pics/hoed.PNG"),
-            PatchesStates.HOED_SEEDED: pygame.image.load("pics/hoed_seeded.PNG"),
-            PatchesStates.HOED_WATERED:pygame.image.load("pics/hoed_watered.PNG"),
-            PatchesStates.HOED_WATERED_SEEDED: pygame.image.load("pics/hoed_watered_seeded.PNG"),
-            ToolType.SEED: pygame.image.load("pics/seed.PNG"),
-            ToolType.WATERING_CAN: pygame.image.load("pics/watering_can.PNG")
+            PatchesStates.EMPTY: pygame.image.load("game/pics/empty.PNG"),
+            ToolType.GLOVE: pygame.image.load("game/pics/glove.PNG"),
+            PatchesStates.GROWING: pygame.image.load("game/pics/growing.PNG"),
+            PatchesStates.HARVESTED: pygame.image.load("game/pics/harvested.PNG"),
+            ToolType.HOE: pygame.image.load("game/pics/hoe.PNG"),
+            PatchesStates.HOED: pygame.image.load("game/pics/hoed.PNG"),
+            PatchesStates.HOED_SEEDED: pygame.image.load("game/pics/hoed_seeded.PNG"),
+            PatchesStates.HOED_WATERED:pygame.image.load("game/pics/hoed_watered.PNG"),
+            PatchesStates.HOED_WATERED_SEEDED: pygame.image.load("game/pics/hoed_watered_seeded.PNG"),
+            ToolType.SEED: pygame.image.load("game/pics/seed.PNG"),
+            ToolType.WATERING_CAN: pygame.image.load("game/pics/watering_can.PNG")
         }
 
         watering_can = WateringCan(self.configuration.watering_can.x, self.configuration.watering_can.y,

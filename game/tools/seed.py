@@ -1,5 +1,5 @@
-from tool_type import ToolType
-from tools import Tools
+from game.tools.tool_type import ToolType
+from game.tools.tools import Tools
 
 
 class Seed(Tools):

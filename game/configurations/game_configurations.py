@@ -1,4 +1,4 @@
-from object_configurations import ObjectConfiguration
+from game.configurations.object_configurations import ObjectConfiguration
 
 
 class GameConfigurations():
