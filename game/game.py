@@ -94,18 +94,22 @@ class Game():
                     elif self.all_patches.has(sprite):    #пропалываем только если грядка пустая
                         if isinstance(self.selected_sprite, Hoe) and sprite.state == PatchesStates.EMPTY:
                             sprite.change_state(PatchesStates.HOED)
+                        elif sprite.state == PatchesStates.EMPTY:
+                            self.selected_sprite=None
                         elif isinstance(self.selected_sprite, WateringCan):
                             if sprite.state == PatchesStates.HOED:
                                 sprite.change_state(PatchesStates.HOED_WATERED)
                             elif sprite.state == PatchesStates.HOED_SEEDED:
                                 sprite.change_state(PatchesStates.HOED_WATERED_SEEDED)
-                            else: #если грядка не прополота или что-то другое, то ничего не происходит
-                                continue
+                            else:
+                                self.selected_sprite=None
                         elif isinstance(self.selected_sprite, Seed):
                             if sprite.state == PatchesStates.HOED:
                                 sprite.change_state(PatchesStates.HOED_SEEDED)
                             elif sprite.state == PatchesStates.HOED_WATERED:
                                 sprite.change_state(PatchesStates.HOED_WATERED_SEEDED)
+                            else:
+                                self.selected_sprite = None
                         elif isinstance(self.selected_sprite, Glove) and sprite.state == PatchesStates.HARVESTED:
                             sprite.change_state(PatchesStates.EMPTY)
                         else:

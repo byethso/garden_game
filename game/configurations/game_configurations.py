@@ -3,8 +3,8 @@ from game.configurations.object_configurations import ObjectConfiguration
 
 class GameConfigurations():
     def __init__(self):
-        self.hoe = ObjectConfiguration(560, 220, 70, 0)
-        self.patch = ObjectConfiguration(190, 130, 100, 30)
-        self.watering_can = ObjectConfiguration(110, 350, 70, 0)
-        self.glove = ObjectConfiguration(560, 350, 70, 0)
-        self.seed = ObjectConfiguration(110, 220, 70, 0)
+        self.patch = ObjectConfiguration(210, 110, 120, 30)
+        self.hoe = ObjectConfiguration(640, 210, 100, 0)
+        self.glove = ObjectConfiguration(640, 350, 100, 0)
+        self.seed = ObjectConfiguration(100, 210, 100, 0)
+        self.watering_can = ObjectConfiguration(100, 350, 100, 0)
