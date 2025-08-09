@@ -106,11 +106,13 @@ class Game():
                                 sprite.change_state(PatchesStates.HOED_SEEDED)
                             elif sprite.state == PatchesStates.HOED_WATERED:
                                 sprite.change_state(PatchesStates.HOED_WATERED_SEEDED)
+                        elif isinstance(self.selected_sprite, Glove) and sprite.state == PatchesStates.HARVESTED:
+                            sprite.change_state(PatchesStates.EMPTY)
                         else:
                             self.selected_sprite = None
 
-    def update(self):
-        self.all_sprites.update(self)
+    def update(self): #убрала self из скобок
+        self.all_sprites.update()
 
     def draw(self):
         self.screen.fill((172, 214, 163))

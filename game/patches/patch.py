@@ -12,6 +12,19 @@ class Patch(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.images[self.state], (size, size))
         self.rect = self.image.get_rect(topleft=(x, y))
 
+        self.start_time = 0
+
     def change_state(self, state):
         self.state = state
         self.image = pygame.transform.scale(self.images[self.state], (self.size, self.size))
+        if self.state == PatchesStates.HOED_WATERED_SEEDED:
+            self.start_time = pygame.time.get_ticks()
+
+    def update(self):
+        super().update()
+        now_time = pygame.time.get_ticks()
+        if now_time - self.start_time >= 5000 and self.state == PatchesStates.HOED_WATERED_SEEDED:
+            self.state = PatchesStates.GROWING
+            self.image = pygame.transform.scale(self.images[self.state], (self.size, self.size))
+        elif now_time - self.start_time >= 10000 and self.state == PatchesStates.GROWING:
+            self.change_state(PatchesStates.HARVESTED)
