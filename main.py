@@ -1,70 +1,43 @@
 import pygame
-import random
-
-WIDTH = 800
-HEIGHT = 650
-
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
-GLOVE=(121, 192, 240)
-
-images = {
-    "empty": pygame.image.load("empty.PNG"),
-    "glove": pygame.image.load("glove.PNG"),
-    "growing": pygame.image.load("growing.PNG"),
-    "harvested": pygame.image.load("harvested.PNG"),
-    "hoe": pygame.image.load("hoe.PNG"),
-    "hoed": pygame.image.load("hoed.PNG"),
-    "hoed_seeded": pygame.image.load("hoed_seeded.PNG"),
-    "hoed_watered": pygame.image.load("hoed_watered.PNG"),
-    "hoed_watered_seeded": pygame.image.load("hoed_watered_seeded.PNG"),
-    "seed": pygame.image.load("seed.PNG"),
-    "watering_can": pygame.image.load("watering_can.PNG")
-}
-
 
 class Patch(pygame.sprite.Sprite):
-    def __init__(self,x,y,size, images):
+    def __init__(self, x, y, size, images):
         pygame.sprite.Sprite.__init__(self)
         self.images = images
         self.state = "empty"
         self.image = pygame.transform.scale(self.images[self.state], (size, size))
         self.rect = self.image.get_rect(topleft=(x, y))
 
-    def change_color(self):
-        self.image.fill((random.randint(0,255),random.randint(0,255),random.randint(0,255)))
 
 class Seed(pygame.sprite.Sprite):
-    def __init__(self,x,y,size, images):
+    def __init__(self, x, y, size, images):
         pygame.sprite.Sprite.__init__(self)
         self.images = images
         self.state = "seed"
         self.image = pygame.transform.scale(self.images[self.state], (size, size))
         self.rect = self.image.get_rect(topleft=(x, y))
-    def draw_line(self, surface, color, width_line):
-        pygame.draw.rect(surface, WHITE, self.rect, width_line)
+
 
 class WateringCan(pygame.sprite.Sprite):
-    def __init__(self,x,y,size,images):
+    def __init__(self, x, y, size, images):
         pygame.sprite.Sprite.__init__(self)
         self.images = images
         self.state = "watering_can"
         self.image = pygame.transform.scale(self.images[self.state], (size, size))
         self.rect = self.image.get_rect(topleft=(x, y))
 
+
 class Hoe(pygame.sprite.Sprite):
-    def __init__(self,x,y,size, images):
+    def __init__(self, x, y, size, images):
         pygame.sprite.Sprite.__init__(self)
         self.images = images
         self.state = "hoe"
         self.image = pygame.transform.scale(self.images[self.state], (size, size))
         self.rect = self.image.get_rect(topleft=(x, y))
 
+
 class Glove(pygame.sprite.Sprite):
-    def __init__(self,x,y,size,images):
+    def __init__(self, x, y, size, images):
         pygame.sprite.Sprite.__init__(self)
         self.images = images
         self.state = "glove"
@@ -72,88 +45,116 @@ class Glove(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=(x, y))
 
 
-pygame.init()
-pygame.mixer.init()
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("My Game")
-clock = pygame.time.Clock()
-all_sprites = pygame.sprite.Group()
-tools=pygame.sprite.Group()
-all_pathes=pygame.sprite.Group()
+class GameConfigurations():
+    def __init__(self):
+        self.hoe = ObjectConfiguration(560, 220, 70,0)
+        self.patch = ObjectConfiguration(190, 130, 100, 30)
+        self.watering_can = ObjectConfiguration(110, 350, 70,0)
+        self.glove = ObjectConfiguration(560, 350, 70,0)
+        self.seed = ObjectConfiguration(110, 220, 70,0)
 
-x=110
-y=220
-seed_size=70
-seed=Seed(x,y,seed_size,images)
-all_sprites.add(seed)
-tools.add(seed)
-
-
-x=110
-y=350
-watering_can_size=70
-watering_can=WateringCan(x,y,watering_can_size,images)
-all_sprites.add(watering_can)
-tools.add(watering_can)
+class ObjectConfiguration():
+    def __init__(self,x,y,size,padding):
+        self.x=x
+        self.y=y
+        self.size=size
+        self.padding=padding
 
 
-x=560
-y=220
-hoe_size=70
-hoe=Hoe(x,y,hoe_size,images)
-all_sprites.add(hoe)
-tools.add(hoe)
+class Game():
+    def __init__(self):
+        pygame.init()
+        pygame.display.set_caption("Garden Game")
+        self.screen_width = 800
+        self.screen_height = 650
+        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
 
-x=560
-y=350
-glove_size=70
-glove=Glove(x,y,glove_size,images)
-all_sprites.add(glove)
-tools.add(glove)
+        self.all_sprites = pygame.sprite.Group()
+        self.all_pathes = pygame.sprite.Group()
+        self.tools = pygame.sprite.Group()
+        self.configuration=GameConfigurations()
 
-plot_size = 100
-plot_padding = 30
-start_x = 190
-start_y = 130
+        self.images = {
+            "empty": pygame.image.load("empty.PNG"),
+            "glove": pygame.image.load("glove.PNG"),
+            "growing": pygame.image.load("growing.PNG"),
+            "harvested": pygame.image.load("harvested.PNG"),
+            "hoe": pygame.image.load("hoe.PNG"),
+            "hoed": pygame.image.load("hoed.PNG"),
+            "hoed_seeded": pygame.image.load("hoed_seeded.PNG"),
+            "hoed_watered": pygame.image.load("hoed_watered.PNG"),
+            "hoed_watered_seeded": pygame.image.load("hoed_watered_seeded.PNG"),
+            "seed": pygame.image.load("seed.PNG"),
+            "watering_can": pygame.image.load("watering_can.PNG")
+        }
 
+        watering_can = WateringCan(self.configuration.watering_can.x,self.configuration.watering_can.y,self.configuration.watering_can.size, self.images)
+        self.all_sprites.add(watering_can)
+        self.tools.add(watering_can)
 
-for row in range(3):
-    for col in range(3):
-        x = start_x + col * (plot_size + plot_padding)
-        y = start_y + row * (plot_size + plot_padding)
-        patch = Patch(x, y, plot_size, images)
-        all_sprites.add(patch)
-        all_pathes.add(patch)
+        glove = Glove(self.configuration.glove.x,self.configuration.glove.y, self.configuration.glove.size,
+                      self.images)
+        self.all_sprites.add(glove)
+        self.tools.add(glove)
 
+        hoe = Hoe(self.configuration.hoe.x,self.configuration.hoe.y, self.configuration.hoe.size,
+                  self.images)
+        self.all_sprites.add(hoe)
+        self.tools.add(hoe)
 
-selected_sprite=None
+        seed = Seed(self.configuration.seed.x, self.configuration.seed.y, self.configuration.seed.size,
+                    self.images)
+        self.all_sprites.add(seed)
+        self.tools.add(seed)
 
-run = True
-while run:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            mouse_pos = event.pos  #координаты клика
-            for sprite in all_sprites:
+        for row in range(3):
+            for col in range(3):
+                x = self.configuration.patch.x + col * (
+                            self.configuration.patch.size + self.configuration.patch.padding)
+                y = self.configuration.patch.y + row * (
+                            self.configuration.patch.size + self.configuration.patch.padding)
+                patch = Patch(x, y, self.configuration.patch.size, self.images)
+                self.all_sprites.add(patch)
+                self.all_pathes.add(patch)
+        self.selected_sprite = None
+        self.running = True
+
+    def run(self):
+        while self.running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+                self.handle_events(event)
+
+            self.update()
+            self.draw()
+        pygame.quit()
+
+    def handle_events(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = event.pos  # координаты клика
+            for sprite in self.all_sprites:
                 if sprite.rect.collidepoint(mouse_pos):
-                    if tools.has(sprite):
-                        if sprite==selected_sprite:
-                            selected_sprite=None
+                    if self.tools.has(sprite):
+                        if sprite == self.selected_sprite:
+                            self.selected_sprite = None
                         else:
-                            selected_sprite = sprite
+                            self.selected_sprite = sprite
                         break
-                elif all_pathes.has(sprite):
-                    selected_sprite=None
+                elif self.all_pathes.has(sprite):
+                    self.selected_sprite = None
+
+    def update(self):
+        self.all_sprites.update(self)
+
+    def draw(self):
+        self.screen.fill((172, 214, 163))
+        self.all_sprites.draw(self.screen)
+        if self.selected_sprite is not None:
+            pygame.draw.rect(self.screen, (111,70,54), self.selected_sprite.rect, 3)
+        pygame.display.flip()
 
 
-    all_sprites.update()
-    screen.fill(BLACK)
-    all_sprites.draw(screen)
-
-    if selected_sprite is not None:
-        pygame.draw.rect(screen, WHITE, selected_sprite.rect, 3)
-    pygame.display.flip()
-
-
-pygame.quit()
+if __name__ == "__main__":
+    game = Game()
+    game.run()
