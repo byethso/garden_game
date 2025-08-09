@@ -1,7 +1,5 @@
-import pygame
-from enum import Enum
 # import '.\game.py'
-from game import Game
+from game.game import Game
 
 
 
